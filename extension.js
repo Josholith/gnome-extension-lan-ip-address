@@ -11,7 +11,7 @@ let main_container_content_updater = function() { main_container_content.set_tex
 
 function _get_local_ip()
 {
-	var command_output_bytes = GLib.spawn_command_line_sync('hostname -i')[1];
+	var command_output_bytes = GLib.spawn_command_line_sync('ip route list default | grep -Eo "src (([0-9A-Fa-f]{1,4}:){7}[0-9A-Fa-f]{1,4}|([0-9]{1,3}\.){3}[0-9]{1,3})" | cut -d" " -f2')[1];
 	var command_output_string = '';
 
 	for (var current_character_index = 0;
