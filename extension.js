@@ -27,8 +27,14 @@ function _get_lan_ip() {
     // So basically we want the next token (word) immediately after the "src"
     // word, and nothing else. This is considerd our LAN IP address.
     var Re = new RegExp(/src [^ ]+/g);
-    var lanIpAddress = command_output_string.match(Re)[0].split(' ')[1];
-
+    var matches = command_output_string.match(Re);
+    var lanIpAddress;
+    if (matches) {
+        lanIpAddress = matches[0].split(' ')[1];
+    } else {
+        lanIpAddress = '';
+    }
+ 
     return lanIpAddress;
 }
 
