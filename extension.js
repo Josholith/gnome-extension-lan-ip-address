@@ -34,7 +34,7 @@ function _get_lan_ip() {
     } else {
         lanIpAddress = '';
     }
- 
+
     return lanIpAddress;
 }
 
@@ -53,7 +53,7 @@ const LanIpAddressIndicator = new Lang.Class({
     },
 
     _updateLabel : function(){
-        const refreshTime = 5 // in seconds
+        const refreshTime = 600; //10 minutos delay in seconds
 
         if (this._timeout) {
                 Mainloop.source_remove(this._timeout);
