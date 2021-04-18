@@ -48,7 +48,7 @@ const LanIpAddressIndicator = new Lang.Class({
             text: 'Loading...',
             y_align: Clutter.ActorAlign.CENTER
         });
-        this.actor.add_child(this.buttonText);
+        this.add_child(this.buttonText);
         this._updateLabel();
     },
 
