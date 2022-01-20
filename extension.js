@@ -7,6 +7,7 @@ const PanelMenu = imports.ui.panelMenu;
 const Clutter = imports.gi.Clutter;
 const GLib = imports.gi.GLib;
 const ShellToolkit = imports.gi.St;
+const Clipboard = St.Clipboard.get_default();
 
 function _get_lan_ip() {
     // Ask the IP stack what route would be used to reach 1.1.1.1 (Cloudflare DNS)
@@ -49,6 +50,10 @@ const LanIpAddressIndicator = new Lang.Class({
             y_align: Clutter.ActorAlign.CENTER
         });
         this.add_child(this.buttonText);
+        this.actor.connect(
+            "button-press-event",
+            Lang.bind(this, this._copyIP)
+          );
         this._updateLabel();
     },
 
@@ -77,6 +82,11 @@ const LanIpAddressIndicator = new Lang.Class({
         this._timeout = undefined;
 
         this.menu.removeAll();
+    },
+
+    _copyIP: function(){
+        Clipboard.set_text(St.ClipboardType.CLIPBOARD, this.buttonText.get_text());
+        Main.notify("IP copied to clipboard.", this.buttonText.get_text()); 
     }
 });
 
