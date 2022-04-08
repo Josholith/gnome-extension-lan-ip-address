@@ -1,6 +1,7 @@
 const Main = imports.ui.main;
 const Mainloop = imports.mainloop;
 
+const GObject = imports.gi.GObject;
 const St = imports.gi.St;
 const Lang = imports.lang;
 const PanelMenu = imports.ui.panelMenu;
@@ -38,21 +39,18 @@ function _get_lan_ip() {
     return lanIpAddress;
 }
 
-const LanIpAddressIndicator = new Lang.Class({
-    Name: 'LanIpAddress.indicator',
-    Extends: PanelMenu.Button,
-
-    _init: function () {
-        this.parent(0.0, "LAN IP Address Indicator", false);
+const LanIpAddressIndicator = GObject.registerClass(class LanIpAddressIndicator extends PanelMenu.Button {
+    _init() {
+        super._init(0.0, "LAN IP Address Indicator", false);
         this.buttonText = new St.Label({
             text: 'Loading...',
             y_align: Clutter.ActorAlign.CENTER
         });
         this.add_child(this.buttonText);
         this._updateLabel();
-    },
+    }
 
-    _updateLabel : function(){
+    _updateLabel() {
         const refreshTime = 5 // in seconds
 
         if (this._timeout) {
@@ -62,15 +60,15 @@ const LanIpAddressIndicator = new Lang.Class({
         this._timeout = Mainloop.timeout_add_seconds(refreshTime, Lang.bind(this, this._updateLabel));
 
         this.buttonText.set_text(_get_lan_ip());
-    },
+    }
 
-    _removeTimeout: function () {
+    _removeTimeout() {
         if (this._timeout) {
             this._timeout = null;
         }
-    },
+    }
 
-    stop: function () {
+    stop() {
         if (this._timeout) {
             Mainloop.source_remove(this._timeout);
         }
