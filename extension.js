@@ -4,7 +4,6 @@ const Main = imports.ui.main;
 const Mainloop = imports.mainloop;
 
 const St = imports.gi.St;
-const Lang = imports.lang;
 const PanelMenu = imports.ui.panelMenu;
 const Clutter = imports.gi.Clutter;
 const GLib = imports.gi.GLib;
@@ -55,22 +54,16 @@ var LanIPAddressIndicator = class LanIPAddressIndicator extends PanelMenu.Button
         this._updateLabel();
     }
 
-    _updateLabel(){
+    _updateLabel() {
         const refreshTime = 5 // in seconds
 
         if (this._timeout) {
                 Mainloop.source_remove(this._timeout);
                 this._timeout = null;
         }
-        this._timeout = Mainloop.timeout_add_seconds(refreshTime, Lang.bind(this, this._updateLabel));
+        this._timeout = Mainloop.timeout_add_seconds(refreshTime, () => {this._updateLabel();});
 
         this.buttonText.set_text(_get_lan_ip());
-    }
-
-    _removeTimeout() {
-        if (this._timeout) {
-            this._timeout = null;
-        }
     }
 
     stop() {
@@ -93,19 +86,14 @@ LanIPAddressIndicator = GObject.registerClass(
 
 let _indicator;
 
-function init() {
-    log('LAN IP Address extension initialized');
-}
-
 function enable() {
-    log('LAN IP Address extension enabled');
     _indicator = new LanIPAddressIndicator();
     Main.panel.addToStatusArea('lan-ip-address-indicator', _indicator);
 }
 
 function disable() {
-    log('LAN IP Address extension disabled');
     _indicator.stop();
     _indicator.destroy();
+    _indicator = null;
 }
 
