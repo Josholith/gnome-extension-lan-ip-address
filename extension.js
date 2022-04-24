@@ -54,7 +54,7 @@ var LanIPAddressIndicator = class LanIPAddressIndicator extends PanelMenu.Button
         this._updateLabel();
     }
 
-    _updateLabel(){
+    _updateLabel() {
         const refreshTime = 5 // in seconds
 
         if (this._timeout) {
