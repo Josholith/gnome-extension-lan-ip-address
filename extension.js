@@ -93,18 +93,12 @@ LanIPAddressIndicator = GObject.registerClass(
 
 let _indicator;
 
-function init() {
-    log('LAN IP Address extension initialized');
-}
-
 function enable() {
-    log('LAN IP Address extension enabled');
     _indicator = new LanIPAddressIndicator();
     Main.panel.addToStatusArea('lan-ip-address-indicator', _indicator);
 }
 
 function disable() {
-    log('LAN IP Address extension disabled');
     _indicator.stop();
     _indicator.destroy();
 }
