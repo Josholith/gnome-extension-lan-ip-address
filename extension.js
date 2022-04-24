@@ -101,5 +101,6 @@ function enable() {
 function disable() {
     _indicator.stop();
     _indicator.destroy();
+    _indicator = null;
 }
 
