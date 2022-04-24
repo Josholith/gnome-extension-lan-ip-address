@@ -67,12 +67,6 @@ var LanIPAddressIndicator = class LanIPAddressIndicator extends PanelMenu.Button
         this.buttonText.set_text(_get_lan_ip());
     }
 
-    _removeTimeout() {
-        if (this._timeout) {
-            this._timeout = null;
-        }
-    }
-
     stop() {
         if (this._timeout) {
             Mainloop.source_remove(this._timeout);
