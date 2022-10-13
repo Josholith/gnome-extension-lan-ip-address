@@ -4,9 +4,10 @@
   "shell-version": [
     "40",
     "41",
-    "42"
+    "42",
+    "43"
   ], 
   "url": "https://github.com/Josholith/gnome-extension-lan-ip-address", 
   "uuid": "lan-ip-address@mrhuber.com", 
-  "version": 10
+  "version": 11
 }
