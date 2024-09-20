@@ -2,6 +2,7 @@
   "description": "Show LAN IP address on GNOME panel. Do not show loopback addresses (127.0.0.0/8) or Docker networks.", 
   "name": "LAN IP Address", 
   "shell-version": [
+    "47",
     "46",
     "45"
   ], 
