@@ -27,7 +27,13 @@ export class LanIPAddressIndicator extends PanelMenu.Button {
             this._timeout = undefined;
         }
         this._timeout = GLib.timeout_add_seconds(priority, refreshTime, () => { this._updateLabel() });
-        this.buttonText.set_text(Utils.getLanIp());
+
+        Utils.getLanIp().then(ip => {
+            this.buttonText.set_text(ip);
+        }).catch(err => {
+            console.error('Error getting LAN IP:', err);
+            this.buttonText.set_text('…');
+        });
     }
 
     stop() {
@@ -38,4 +44,3 @@ export class LanIPAddressIndicator extends PanelMenu.Button {
         this.menu.removeAll();
     }
 }
-
