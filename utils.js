@@ -1,17 +1,18 @@
 import Gio from 'gi://Gio';
 
+let _routeProc = null;
+
 export const getLanIp = async () => {
     return new Promise((resolve, reject) => {
         // Ask the IP stack what route would be used to reach 1.1.1.1 (Cloudflare DNS)
         // Specifically, what src would be used for the 1st hop?
-        const proc = Gio.Subprocess.new(
-            ['ip', 'route', 'get', '1.1.1.1'],
-            Gio.SubprocessFlags.STDOUT_PIPE | Gio.SubprocessFlags.STDERR_PIPE
-        )
+        // Only create a new subprocess if we don't have one, or the previous one exited.
+        // This avoids the race condition and crash reported in issue #37.
+        if (!_routeProc || _routeProc.get_if_exited()) {
+            _routeProc = _createRouteProc();
+        }
 
-        proc.init(null);
-
-        proc.communicate_utf8_async(
+        _routeProc.communicate_utf8_async(
             null, // No input to send
             null, // Not cancellable
             (self, res) => {
@@ -25,10 +26,20 @@ export const getLanIp = async () => {
 
                 const srcIpAddress = _extractSrcIpAddress(stdout);
                 resolve(srcIpAddress);
+
+                // Clear the reference so the next call creates a fresh subprocess
+                _routeProc = null;
             }
         );
     });
 }
+
+const _createRouteProc = () => {
+    return Gio.Subprocess.new(
+        ['ip', 'route', 'get', '1.1.1.1'],
+        Gio.SubprocessFlags.STDOUT_PIPE | Gio.SubprocessFlags.STDERR_PIPE
+    );
+};
 
 const _extractSrcIpAddress = (command_output_string) => {
     // Output of the "ip route" command will be a string
