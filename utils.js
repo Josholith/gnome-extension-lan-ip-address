@@ -41,6 +41,13 @@ const _createRouteProc = () => {
     );
 };
 
+export function cleanupRouteProc() {
+    if (_routeProc && !_routeProc.get_if_exited()) {
+        _routeProc.force_exit();
+    }
+    _routeProc = null;
+}
+
 const _extractSrcIpAddress = (command_output_string) => {
     // Output of the "ip route" command will be a string
     // " ... src 1.2.3.4 ..."
