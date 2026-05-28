@@ -1,5 +1,6 @@
 import { panel } from 'resource:///org/gnome/shell/ui/main.js';
 import { LanIPAddressIndicator } from './LanIPAddressIndicator.js';
+import * as Utils from './utils.js';
 import GObject from 'gi://GObject';
 
 
@@ -15,6 +16,7 @@ export default class LanIpAddressExtension {
         this._indicator.stop();
         this._indicator.destroy();
         this._indicator = undefined;
+        Utils.cleanupRouteProc();
     }
 }
 
